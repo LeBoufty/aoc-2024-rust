@@ -3,16 +3,16 @@ use std::{collections::HashMap, error};
 use crate::inputs::read_lines;
 use regex::{self, Regex};
 
-struct lists {
+struct Lists {
     left: Vec<u32>,
     right: Vec<u32>
 }
 
-fn parse_input(test: bool) -> Result<lists, Box<dyn error::Error>> {
+fn parse_input(test: bool) -> Result<Lists, Box<dyn error::Error>> {
     let lines = read_lines(1, test)?;
     let re = Regex::new("(\\d+)   (\\d+)")?;
     let mut sortie = 
-        lists {
+        Lists {
             left: Vec::new(),
             right: Vec::new(),
         };
@@ -47,4 +47,14 @@ pub fn part2(test:bool) -> Result<u32, Box<dyn error::Error>> {
         sortie += i * similarities.get(&i).unwrap_or(&0);
     }
     Ok(sortie)
+}
+
+#[test]
+fn test_part1() {
+    assert_eq!(part1(true).unwrap(), 11);
+}
+
+#[test]
+fn test_part2() {
+    assert_eq!(part2(true).unwrap(),31);
 }
