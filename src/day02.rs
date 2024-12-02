@@ -29,6 +29,19 @@ impl Levels {
         }
         true
     }
+
+    fn is_safe_dampen(&self) -> bool {
+        if self.is_safe() {return true;}
+        for i in 0..self.values.len() {
+            let mut dampened = Levels {
+                values: self.values.clone(),
+                rising: self.rising
+            };
+            dampened.values.remove(i);
+            if dampened.is_safe() {return true;}
+        }
+        false
+    }
 }
 
 struct Reports {
@@ -63,7 +76,21 @@ pub fn part1(test:bool) -> Result<u32, Box<dyn error::Error>> {
     Ok(sortie)
 }
 
+pub fn part2(test:bool) -> Result<u32, Box<dyn error::Error>> {
+    let mut sortie = 0;
+    let reports = parse_input(test)?;
+    for i in reports.values {
+        if i.is_safe_dampen() {sortie += 1;}
+    }
+    Ok(sortie)
+}
+
 #[test]
 fn test_part1() {
     assert_eq!(part1(true).unwrap(), 2);
+}
+
+#[test]
+fn test_part2() {
+    assert_eq!(part2(true).unwrap(), 4);
 }
