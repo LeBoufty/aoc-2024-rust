@@ -1,7 +1,6 @@
 use std::error;
 
 use crate::inputs::read_lines;
-use regex::{self, Regex};
 
 struct Levels {
     values: Vec<i32>,
