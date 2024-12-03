@@ -6,7 +6,7 @@ mod inputs;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let now = time::Instant::now();
-    let result = day03::part1(false)?;
+    let result = day03::part2(false)?;
     println!("Result : {} // Time elapsed : {}µs", result, now.elapsed().as_micros());
     Ok(())
 }
