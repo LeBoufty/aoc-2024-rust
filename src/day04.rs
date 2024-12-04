@@ -65,3 +65,41 @@ pub fn part1(test: bool) -> Result<u32, Box<dyn error::Error>> {
     Ok(count)
 }
 
+pub fn part2(test: bool) -> Result<u32, Box<dyn error::Error>> {
+    let values = parse_input(test)?;
+    let mut count = 0;
+    for a in values.a {
+        let mut mas_count = 0;
+        if values.m.contains(&(a.0 - 1, a.1 - 1))
+            && values.s.contains(&(a.0 + 1, a.1 + 1)) {
+                mas_count += 1;
+            }
+        if values.m.contains(&(a.0 + 1, a.1 + 1))
+            && values.s.contains(&(a.0 - 1, a.1 - 1)) {
+                mas_count += 1;
+            }
+        if values.m.contains(&(a.0 + 1, a.1 - 1))
+            && values.s.contains(&(a.0 - 1, a.1 + 1)) {
+                mas_count += 1;
+            }
+        if values.m.contains(&(a.0 - 1, a.1 + 1))
+            && values.s.contains(&(a.0 + 1, a.1 - 1)) {
+                mas_count += 1;
+            }
+        if mas_count == 2 {
+            count += 1;
+        }
+    }
+    Ok(count)
+}
+
+#[test]
+fn test_part1() {
+    assert_eq!(part1(true).unwrap(), 18);
+}
+
+#[test]
+fn test_part2() {
+    assert_eq!(part2(true).unwrap(),9);
+}
+
