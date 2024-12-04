@@ -1,4 +1,4 @@
-use std::{error};
+use std::error;
 use regex::{self, Regex};
 use crate::inputs::read_input;
 
