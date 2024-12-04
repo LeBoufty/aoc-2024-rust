@@ -4,6 +4,7 @@ mod day02;
 mod day03;
 mod day04;
 mod inputs;
+mod chargrid;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let now = time::Instant::now();

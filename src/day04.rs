@@ -1,5 +1,6 @@
 use std::error;
 use crate::inputs::read_lines;
+use crate::chargrid;
 
 struct Word {
     x: Vec<(i32, i32)>,
@@ -10,24 +11,13 @@ struct Word {
 
 fn parse_input(test: bool) -> Result<Word, Box<dyn error::Error>> {
     let lines = read_lines(4, test)?;
-    let linelen = lines[0].len();
-    let mut sortie = Word {
-        x: Vec::new(),
-        m: Vec::new(),
-        a: Vec::new(),
-        s: Vec::new()
+    let cg = chargrid::make_grid(&lines);
+    let sortie = Word {
+        x: cg.find_all('X'),
+        m: cg.find_all('M'),
+        a: cg.find_all('A'),
+        s: cg.find_all('S')
     };
-    for l in 0..lines.len() {
-        for c in 0..linelen {
-            match lines[l].chars().nth(c).unwrap() {
-                'X' => sortie.x.push((l as i32, c as i32)),
-                'M' => sortie.m.push((l as i32, c as i32)),
-                'A' => sortie.a.push((l as i32, c as i32)),
-                'S' => sortie.s.push((l as i32, c as i32)),
-                _ => println!("Unknown char {}", lines[l].chars().nth(c).unwrap()),
-            }
-        }
-    }
     Ok(sortie)
 }
 
