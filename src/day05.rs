@@ -28,23 +28,17 @@ impl Ordering {
     }
 
     fn get_correct(&self) -> Vec<Vec<u32>> {
-        let mut sortie: Vec<Vec<u32>> = Vec::new();
-        self.updates.iter().for_each(|u| {
-            if self.is_correct(u) {
-                sortie.push(u.clone());
-            }
-        });
-        sortie
+        self.updates.iter()
+            .filter(|u| self.is_correct(u))
+            .map(|u| u.clone())
+            .collect()
     }
 
     fn get_incorrect(&self) -> Vec<Vec<u32>> {
-        let mut sortie: Vec<Vec<u32>> = Vec::new();
-        self.updates.iter().for_each(|u| {
-            if !self.is_correct(u) {
-                sortie.push(u.clone());
-            }
-        });
-        sortie
+        self.updates.iter()
+            .filter(|u| !self.is_correct(u))
+            .map(|u| u.clone())
+            .collect()
     }
 
     fn corrected(&self, update: &Vec<u32>) -> Vec<u32> {
@@ -81,21 +75,19 @@ fn parse_input(test:bool) -> Result<Ordering, Box<dyn error::Error>> {
 pub fn part1(test: bool) -> Result<u32, Box<dyn error::Error>> {
     let values = parse_input(test)?;
     let correct = values.get_correct();
-    let mut sortie: u32 = 0;
-    for u in correct {
-        sortie += u.get(u.len()/2).unwrap();
-    }
+    let sortie = correct.iter()
+        .map(|u| u.get(u.len()/2).unwrap())
+        .sum();
     Ok(sortie)
 }
 
 pub fn part2(test: bool) -> Result<u32, Box<dyn error::Error>> {
     let values = parse_input(test)?;
     let updates = values.get_incorrect();
-    let mut sortie: u32 = 0;
-    for u in updates {
-        let corrected = values.corrected(&u);
-        sortie += corrected.get(corrected.len()/2).unwrap();
-    }
+    let sortie = updates.iter()
+        .map(|u| values.corrected(u))
+        .map(|u| *u.get(u.len()/2).unwrap())
+        .sum();
     Ok(sortie)
 }
 
