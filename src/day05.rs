@@ -4,39 +4,27 @@ use crate::inputs::read_lines;
 
 struct Ordering {
     before: HashMap<u32, Vec<u32>>,
-    after: HashMap<u32, Vec<u32>>,
     updates: Vec<Vec<u32>>
 }
 
 impl Ordering {
     fn is_correct(&self, update: &Vec<u32>) -> bool {
-        for i in 0..update.len()-1 {
-            let befores_o = self.before.get(&update[i]);
-            if !befores_o.is_none() {
-                let befores = befores_o.unwrap();
-                for j in i+1..update.len() {
-                    if befores.contains(&update[j]) {
-                        return false;
-                    }
-                }
-            }
-        }
-        true
+        return self.get_problem(update).is_none();
     }
 
-    fn get_problem(&self, update:&Vec<u32>) -> (usize, usize) {
+    fn get_problem(&self, update:&Vec<u32>) -> Option<(usize, usize)> {
         for i in 0..update.len()-1 {
             let befores_o = self.before.get(&update[i]);
             if !befores_o.is_none() {
                 let befores = befores_o.unwrap();
                 for j in i+1..update.len() {
                     if befores.contains(&update[j]) {
-                        return (i, j);
+                        return Some((i, j));
                     }
                 }
             }
         }
-        (0, 0)
+        None
     }
 
     fn get_correct(&self) -> Vec<Vec<u32>> {
@@ -62,7 +50,7 @@ impl Ordering {
     fn corrected(&self, update: &Vec<u32>) -> Vec<u32> {
         let mut sortie = update.clone();
         while !self.is_correct(&sortie) {
-            let indexes = self.get_problem(&sortie);
+            let indexes = self.get_problem(&sortie).unwrap();
             sortie.swap(indexes.0, indexes.1);
         }
         sortie
@@ -73,7 +61,6 @@ fn parse_input(test:bool) -> Result<Ordering, Box<dyn error::Error>> {
     let lines = read_lines(5, test)?;
     let mut sortie = Ordering {
         before: HashMap::new(),
-        after: HashMap::new(),
         updates: Vec::new()
     };
     let mut parsing_rules = true;
@@ -82,7 +69,6 @@ fn parse_input(test:bool) -> Result<Ordering, Box<dyn error::Error>> {
             parsing_rules = false;
         } else if parsing_rules {
             let digits: Vec<u32> = l.split('|').map(|s| s.parse().unwrap()).collect();
-            sortie.after.entry(digits[0]).or_insert(Vec::new()).push(digits[1]);
             sortie.before.entry(digits[1]).or_insert(Vec::new()).push(digits[0]);
         } else {
             let digits: Vec<u32> = l.split(',').map(|s| s.parse().unwrap()).collect();
