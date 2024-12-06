@@ -1,3 +1,4 @@
+#[derive(Clone)]
 pub struct CharGrid {
     grid: Vec<Vec<char>>
 }
@@ -17,21 +18,27 @@ impl CharGrid {
         }
         true
     }
-    pub fn get(&self, l: usize, c: usize) -> char {
-        if l > self.height() {return '\0';}
-        if c > self.width() {return '\0';}
-        return self.grid[l][c];
+    pub fn get(&self, l: usize, c: usize) -> Option<char> {
+        if !self.is_in_grid(l, c) {return None}
+        return Some(self.grid[l][c]);
+    }
+    pub fn set(&mut self, l:usize, c:usize, ch:char) {
+        if !self.is_in_grid(l, c) {return}
+        self.grid[l][c] = ch;
     }
     pub fn find_all(&self, ch: char) -> Vec<(i32, i32)> {
         let mut sortie: Vec<(i32, i32)> = Vec::new();
         for l in 0..self.height() {
             for c in 0..self.grid[l].len() {
-                if self.get(l, c) == ch {
+                if self.get(l, c).unwrap() == ch {
                     sortie.push((l as i32, c as i32));
                 }
             }
         }
         sortie
+    }
+    pub fn is_in_grid(&self, l:usize, c:usize) -> bool {
+        return l < self.height() && c < self.width()
     }
 }
 
