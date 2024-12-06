@@ -64,7 +64,9 @@ impl Map {
     }
 
     fn obstruct(&mut self, l: usize, c: usize) {
-        self.grid.set(l, c, '#');
+        if self.grid.get(l, c).unwrap_or('#') == '.' {
+            self.grid.set(l, c, '#');
+        }
     }
 }
 
@@ -112,14 +114,19 @@ pub fn part1(test: bool) -> Result<u32, Box<dyn error::Error>> {
 
 pub fn part2(test: bool) -> Result<u32, Box<dyn error::Error>> {
     let mut values = parse_input(test)?;
+    let copy = values.clone();
     let mut obstructable = 0;
-    while let Some(g) = values.get_next() {
-        let mut copy = values.clone();
-        copy.obstruct(g.position.0 as usize, g.position.1 as usize);
-        if copy.is_in_loop() {
+    let mut explored: Vec<(i32, i32)> = Vec::new();
+    while let Some(pos) = values.update() {
+        explored.push(pos);
+    }
+    explored = explored.iter().cloned().unique().collect();
+    for i in explored {
+        let mut obstructed = copy.clone();
+        obstructed.obstruct(i.0 as usize, i.1 as usize);
+        if obstructed.is_in_loop() {
             obstructable += 1;
         }
-        values.update();
     }
     return Ok(obstructable);
 }
