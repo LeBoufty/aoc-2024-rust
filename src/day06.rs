@@ -11,15 +11,16 @@ struct Guard {
 
 #[derive(Clone)]
 struct Map {
-    width: usize,
-    height: usize,
+    width: i32,
+    height: i32,
     blocked: Vec<(i32, i32)>,
     guard: Guard
 }
 
 impl Map {
-    fn is_in_grid(&self, l: usize, c: usize) -> bool {
-        return l < self.height && c < self.width;
+    fn is_in_grid(&self, coords: (i32, i32)) -> bool {
+        return coords.0 < self.height && coords.1 < self.width
+            && coords.0 >= 0 && coords.1 >= 0;
     }
 
     fn is_blocked(&self, coords: (i32, i32)) -> bool {
@@ -34,7 +35,7 @@ impl Map {
         if looking_at.0 < 0 || looking_at.1 < 0 {
             return None;
         }
-        if !self.is_in_grid(looking_at.0 as usize, looking_at.1 as usize) {
+        if !self.is_in_grid(looking_at) {
             return None;
         }
         if self.is_blocked(looking_at) {
@@ -105,8 +106,8 @@ fn parse_input(test: bool) -> Result<Map, Box<dyn error::Error>> {
     };
     return Ok(
         Map {
-            width: cg.width(),
-            height: cg.height(),
+            width: cg.width() as i32,
+            height: cg.height() as i32,
             blocked: cg.find_all('#'),
             guard: g
         }
