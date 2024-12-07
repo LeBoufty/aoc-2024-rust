@@ -2,6 +2,8 @@ use crate::chargrid;
 use crate::inputs::read_lines;
 use std::error;
 use itertools::Itertools;
+use std::sync::{Arc, Mutex};
+use std::thread;
 
 #[derive(PartialEq, Clone)]
 struct Guard {
@@ -123,20 +125,29 @@ pub fn part1(test: bool) -> Result<u32, Box<dyn error::Error>> {
 pub fn part2(test: bool) -> Result<u32, Box<dyn error::Error>> {
     let mut values = parse_input(test)?;
     let copy = values.clone();
-    let mut obstructable = 0;
+    let obstructable = Arc::new(Mutex::new(0));
     let mut explored: Vec<(i32, i32)> = Vec::new();
     while let Some(pos) = values.update() {
         explored.push(pos);
     }
     explored = explored.iter().cloned().unique().collect();
+    let mut handles = vec![];
     for i in explored {
         let mut obstructed = copy.clone();
-        obstructed.obstruct(i);
-        if obstructed.is_in_loop() {
-            obstructable += 1;
-        }
+        let obstructable = Arc::clone(&obstructable);
+        let handle = thread::spawn(move || {
+            obstructed.obstruct(i);
+            if obstructed.is_in_loop() {
+                let mut ob = obstructable.lock().unwrap();
+                *ob += 1;
+            }
+        });
+        handles.push(handle);
     }
-    return Ok(obstructable);
+    for handle in handles {
+        handle.join().unwrap();
+    }
+    return Ok(*obstructable.lock().unwrap());
 }
 
 #[test]
