@@ -32,9 +32,6 @@ impl Map {
             self.guard.position.0 + self.guard.facing.0,
             self.guard.position.1 + self.guard.facing.1
         );
-        if looking_at.0 < 0 || looking_at.1 < 0 {
-            return None;
-        }
         if !self.is_in_grid(looking_at) {
             return None;
         }
