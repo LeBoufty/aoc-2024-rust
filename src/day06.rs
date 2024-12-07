@@ -1,4 +1,4 @@
-use crate::chargrid::{self, CharGrid};
+use crate::chargrid;
 use crate::inputs::read_lines;
 use std::error;
 use itertools::Itertools;
@@ -11,11 +11,21 @@ struct Guard {
 
 #[derive(Clone)]
 struct Map {
-    grid: CharGrid,
+    width: usize,
+    height: usize,
+    blocked: Vec<(i32, i32)>,
     guard: Guard
 }
 
 impl Map {
+    fn is_in_grid(&self, l: usize, c: usize) -> bool {
+        return l < self.height && c < self.width;
+    }
+
+    fn is_blocked(&self, coords: (i32, i32)) -> bool {
+        return self.blocked.contains(&coords);
+    }
+
     fn update(&mut self) -> Option<(i32, i32)> {
         let looking_at = (
             self.guard.position.0 + self.guard.facing.0,
@@ -24,10 +34,10 @@ impl Map {
         if looking_at.0 < 0 || looking_at.1 < 0 {
             return None;
         }
-        if !self.grid.is_in_grid(looking_at.0 as usize, looking_at.1 as usize) {
+        if !self.is_in_grid(looking_at.0 as usize, looking_at.1 as usize) {
             return None;
         }
-        if self.grid.get(looking_at.0 as usize, looking_at.1 as usize).unwrap() == '#' {
+        if self.is_blocked(looking_at) {
             self.guard.facing = self.guard.rotate();
             return Some(self.guard.position.clone());
         } else {
@@ -63,10 +73,8 @@ impl Map {
         return !copy.get_next().is_none();
     }
 
-    fn obstruct(&mut self, l: usize, c: usize) {
-        if self.grid.get(l, c).unwrap_or('#') == '.' {
-            self.grid.set(l, c, '#');
-        }
+    fn obstruct(&mut self, coords: (i32, i32)) {
+        self.blocked.push(coords);
     }
 }
 
@@ -97,7 +105,9 @@ fn parse_input(test: bool) -> Result<Map, Box<dyn error::Error>> {
     };
     return Ok(
         Map {
-            grid: cg,
+            width: cg.width(),
+            height: cg.height(),
+            blocked: cg.find_all('#'),
             guard: g
         }
     );
@@ -123,7 +133,7 @@ pub fn part2(test: bool) -> Result<u32, Box<dyn error::Error>> {
     explored = explored.iter().cloned().unique().collect();
     for i in explored {
         let mut obstructed = copy.clone();
-        obstructed.obstruct(i.0 as usize, i.1 as usize);
+        obstructed.obstruct(i);
         if obstructed.is_in_loop() {
             obstructable += 1;
         }
