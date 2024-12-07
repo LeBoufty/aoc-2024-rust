@@ -1,6 +1,7 @@
 use core::error;
 use std::collections::HashMap;
 use crate::inputs::read_lines;
+use rayon::prelude::*;
 
 struct Ordering {
     before: HashMap<u32, Vec<u32>>,
@@ -28,14 +29,14 @@ impl Ordering {
     }
 
     fn get_correct(&self) -> Vec<Vec<u32>> {
-        self.updates.iter()
+        self.updates.par_iter()
             .filter(|u| self.is_correct(u))
             .map(|u| u.clone())
             .collect()
     }
 
     fn get_incorrect(&self) -> Vec<Vec<u32>> {
-        self.updates.iter()
+        self.updates.par_iter()
             .filter(|u| !self.is_correct(u))
             .map(|u| u.clone())
             .collect()
@@ -75,7 +76,7 @@ fn parse_input(test:bool) -> Result<Ordering, Box<dyn error::Error>> {
 pub fn part1(test: bool) -> Result<u32, Box<dyn error::Error>> {
     let values = parse_input(test)?;
     let correct = values.get_correct();
-    let sortie = correct.iter()
+    let sortie = correct.par_iter()
         .map(|u| u.get(u.len()/2).unwrap())
         .sum();
     Ok(sortie)
@@ -84,7 +85,7 @@ pub fn part1(test: bool) -> Result<u32, Box<dyn error::Error>> {
 pub fn part2(test: bool) -> Result<u32, Box<dyn error::Error>> {
     let values = parse_input(test)?;
     let updates = values.get_incorrect();
-    let sortie = updates.iter()
+    let sortie = updates.par_iter()
         .map(|u| values.corrected(u))
         .map(|u| *u.get(u.len()/2).unwrap())
         .sum();

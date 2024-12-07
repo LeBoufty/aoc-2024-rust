@@ -1,6 +1,7 @@
 use crate::inputs::read_lines;
 use std::error;
 use radix_fmt::radix_3;
+use rayon::prelude::*;
 
 struct Equation {
     result: u64,
@@ -65,7 +66,7 @@ fn parse_input(test: bool) -> Result<Calibration, Box<dyn error::Error>> {
 
 pub fn part1(test: bool) -> Result<u64, Box<dyn error::Error>> {
     let values = parse_input(test)?;
-    let sortie = values.equations.iter()
+    let sortie = values.equations.par_iter()
         .filter(|x| x.is_possible())
         .map(|x| x.result)
         .sum();
@@ -74,7 +75,7 @@ pub fn part1(test: bool) -> Result<u64, Box<dyn error::Error>> {
 
 pub fn part2(test: bool) -> Result<u64, Box<dyn error::Error>> {
     let values = parse_input(test)?;
-    let sortie = values.equations.iter()
+    let sortie = values.equations.par_iter()
         .filter(|x| x.is_possible_concat())
         .map(|x| x.result)
         .sum();
