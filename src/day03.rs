@@ -3,13 +3,13 @@ use regex::{self, Regex};
 use crate::inputs::read_input;
 
 struct Mul {
-    left: i32,
-    right: i32,
+    left: u32,
+    right: u32,
     todo: bool
 }
 
 impl Mul {
-    fn value(&self) -> i32 {
+    fn value(&self) -> u32 {
         return self.left * self.right;
     }
 }
@@ -24,8 +24,8 @@ fn parse_input(test:bool) -> Result<Vec<Mul>, Box<dyn error::Error>> {
         else if token.eq("don't()") {todo = false;}
         else {
             mules.push(Mul {
-                left: left.parse::<i32>()?,
-                right: right.parse::<i32>()?,
+                left: left.parse::<u32>()?,
+                right: right.parse::<u32>()?,
                 todo: todo.clone()
             });
         }
@@ -33,7 +33,7 @@ fn parse_input(test:bool) -> Result<Vec<Mul>, Box<dyn error::Error>> {
     return Ok(mules);
 }
 
-pub fn part1(test: bool) -> Result<i32, Box<dyn error::Error>> {
+pub fn part1(test: bool) -> Result<u32, Box<dyn error::Error>> {
     let values = parse_input(test)?;
     let mut sortie = 0;
     for i in values {
@@ -42,7 +42,7 @@ pub fn part1(test: bool) -> Result<i32, Box<dyn error::Error>> {
     return Ok(sortie);
 }
 
-pub fn part2(test: bool) -> Result<i32, Box<dyn error::Error>> {
+pub fn part2(test: bool) -> Result<u32, Box<dyn error::Error>> {
     let values = parse_input(test)?;
     let mut sortie = 0;
     for i in values {
