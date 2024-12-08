@@ -22,11 +22,7 @@ impl Antennas {
                             2*pos2.0 - pos1.0,
                             2*pos2.1 - pos1.1
                         );
-                        if !repeat {
-                            if self.in_bounds(antinode) && !sortie.contains(&antinode) {
-                                sortie.push(antinode);
-                            }
-                        } else {
+                        if repeat {
                             while self.in_bounds(antinode) {
                                 if !sortie.contains(&antinode) {
                                     sortie.push(antinode);
@@ -34,6 +30,8 @@ impl Antennas {
                                 antinode.0 += pos2.0 - pos1.0;
                                 antinode.1 += pos2.1 - pos1.1;
                             }
+                        } else if self.in_bounds(antinode) && !sortie.contains(&antinode) {
+                            sortie.push(antinode);
                         }
                     }
                 }
