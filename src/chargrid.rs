@@ -3,6 +3,20 @@ pub struct CharGrid {
     grid: Vec<Vec<char>>
 }
 
+pub struct Symbol {
+    symbol: char,
+    coords: (i32, i32)
+}
+
+impl Symbol {
+    pub fn get_symbol(&self) -> char {
+        return self.symbol;
+    }
+    pub fn get_coords(&self) -> (i32, i32) {
+        return self.coords;
+    }
+}
+
 impl CharGrid {
     pub fn height(&self) -> usize {
         return self.grid.len();
@@ -32,6 +46,25 @@ impl CharGrid {
             for c in 0..self.grid[l].len() {
                 if self.get(l, c).unwrap() == ch {
                     sortie.push((l as i32, c as i32));
+                }
+            }
+        }
+        sortie
+    }
+    pub fn find_all_symbols(&self, default_char: Option<char>) -> Vec<Symbol> {
+        let mut sortie: Vec<Symbol> = Vec::new();
+        for l in 0..self.grid.len() {
+            for c in 0..self.grid[l].len() {
+                if default_char.is_none() {
+                    sortie.push(Symbol {
+                        symbol: self.grid[l][c],
+                        coords: (l as i32, c as i32)
+                    });
+                } else if self.grid[l][c] != default_char.unwrap() {
+                    sortie.push(Symbol {
+                        symbol: self.grid[l][c],
+                        coords: (l as i32, c as i32)
+                    });
                 }
             }
         }
