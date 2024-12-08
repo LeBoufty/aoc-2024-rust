@@ -55,17 +55,10 @@ impl Antennas {
 fn parse_input(test:bool) -> Result<Antennas, Box<dyn error::Error>> {
     let lines = read_lines(8, test)?;
     let cg = chargrid::make_grid(&lines);
-    let mut antennas: HashMap<char, Vec<(i32, i32)>> = HashMap::new();
-    cg.find_all_symbols(Some('.')).iter()
-        .for_each(|s|
-            antennas.entry(s.get_symbol())
-                .or_insert(Vec::new())
-                .push(s.get_coords())
-        );
     Ok(Antennas {
         height: cg.height() as i32,
         width: cg.width() as i32,
-        antennas
+        antennas: cg.get_hashmap(Some('.'))
     })
 }
 

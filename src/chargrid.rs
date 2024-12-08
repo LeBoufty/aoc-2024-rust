@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 #[derive(Clone)]
 pub struct CharGrid {
     grid: Vec<Vec<char>>
@@ -68,6 +70,16 @@ impl CharGrid {
                 }
             }
         }
+        sortie
+    }
+    pub fn get_hashmap(&self, default_char: Option<char>) -> HashMap<char, Vec<(i32, i32)>> {
+        let mut sortie: HashMap<char, Vec<(i32, i32)>> = HashMap::new();
+        self.find_all_symbols(default_char).iter()
+        .for_each(|s|
+            sortie.entry(s.get_symbol())
+                .or_insert(Vec::new())
+                .push(s.get_coords())
+        );
         sortie
     }
     pub fn is_in_grid(&self, l:usize, c:usize) -> bool {
