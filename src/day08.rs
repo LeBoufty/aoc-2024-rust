@@ -58,17 +58,17 @@ fn parse_input(test:bool) -> Result<Antennas, Box<dyn error::Error>> {
     let lines = read_lines(8, test)?;
     let cg = chargrid::make_grid(&lines);
     let mut antennas: HashMap<char, Vec<(i32, i32)>> = HashMap::new();
-    for i in cg.find_all_symbols(Some('.')) {
-        antennas.entry(i.get_symbol())
-            .or_insert(Vec::new())
-            .push(i.get_coords());
-    }
-    let sortie = Antennas {
+    cg.find_all_symbols(Some('.')).iter()
+        .for_each(|s|
+            antennas.entry(s.get_symbol())
+                .or_insert(Vec::new())
+                .push(s.get_coords())
+        );
+    Ok(Antennas {
         height: cg.height() as i32,
         width: cg.width() as i32,
         antennas
-    };
-    Ok(sortie)
+    })
 }
 
 pub fn part1(test: bool) -> Result<u32, Box<dyn error::Error>> {
