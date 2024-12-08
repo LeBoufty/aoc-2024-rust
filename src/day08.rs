@@ -1,7 +1,7 @@
-use std::{error, hash::Hash};
+use std::error;
 use crate::inputs::read_lines;
 use std::collections::HashMap;
-use crate::chargrid::{self,Symbol};
+use crate::chargrid;
 
 struct Antennas {
     height: i32,
