@@ -26,21 +26,9 @@ impl CharGrid {
     pub fn width(&self) -> usize {
         return self.grid[0].len();
     }
-    pub fn is_rectangle(&self) -> bool {
-        for i in self.grid.clone() {
-            if i.len() != self.width() {
-                return false;
-            }
-        }
-        true
-    }
     pub fn get(&self, l: usize, c: usize) -> Option<char> {
         if !self.is_in_grid(l, c) {return None}
         return Some(self.grid[l][c]);
-    }
-    pub fn set(&mut self, l:usize, c:usize, ch:char) {
-        if !self.is_in_grid(l, c) {return}
-        self.grid[l][c] = ch;
     }
     pub fn find_all(&self, ch: char) -> Vec<(i32, i32)> {
         let mut sortie: Vec<(i32, i32)> = Vec::new();
