@@ -1,22 +1,23 @@
 use std::error;
+use std::collections::HashSet;
 use crate::inputs::read_lines;
 use crate::chargrid;
 
 struct Word {
-    x: Vec<(i32, i32)>,
-    m: Vec<(i32, i32)>,
-    a: Vec<(i32, i32)>,
-    s: Vec<(i32, i32)>
+    x: HashSet<(i32, i32)>,
+    m: HashSet<(i32, i32)>,
+    a: HashSet<(i32, i32)>,
+    s: HashSet<(i32, i32)>
 }
 
 fn parse_input(test: bool) -> Result<Word, Box<dyn error::Error>> {
     let lines = read_lines(4, test)?;
     let cg = chargrid::make_grid(&lines);
     let sortie = Word {
-        x: cg.find_all('X'),
-        m: cg.find_all('M'),
-        a: cg.find_all('A'),
-        s: cg.find_all('S')
+        x: cg.find_all_hset('X'),
+        m: cg.find_all_hset('M'),
+        a: cg.find_all_hset('A'),
+        s: cg.find_all_hset('S')
     };
     Ok(sortie)
 }
