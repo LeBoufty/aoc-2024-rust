@@ -3,14 +3,12 @@ use core::error;
 use crate::inputs::read_input;
 use std::cmp::min;
 
-#[derive(Clone, Copy, Debug)]
 struct Block {
     start: u64,
     size: u64,
     id: Option<u64>
 }
 
-#[derive(Debug, Clone)]
 struct Disk {
     empty: Vec<Block>,
     full: Vec<Block>
