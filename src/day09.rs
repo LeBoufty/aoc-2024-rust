@@ -147,3 +147,8 @@ pub fn part2(test: bool) -> Result<u64, Box<dyn error::Error>> {
 fn test_part1() {
     assert_eq!(part1(true).unwrap(), 1928);
 }
+
+#[test]
+fn test_part2() {
+    assert_eq!(part2(true).unwrap(), 2858);
+}
