@@ -33,22 +33,22 @@ fn parse_input(test:bool) -> Result<Vec<Mul>, Box<dyn error::Error>> {
     return Ok(mules);
 }
 
-pub fn part1(test: bool) -> Result<u32, Box<dyn error::Error>> {
+pub fn part1(test: bool) -> Result<u64, Box<dyn error::Error>> {
     let values = parse_input(test)?;
     let mut sortie = 0;
     for i in values {
         sortie += i.value();
     }
-    return Ok(sortie);
+    return Ok(sortie as u64);
 }
 
-pub fn part2(test: bool) -> Result<u32, Box<dyn error::Error>> {
+pub fn part2(test: bool) -> Result<u64, Box<dyn error::Error>> {
     let values = parse_input(test)?;
     let mut sortie = 0;
     for i in values {
         if i.todo {sortie += i.value();}
     }
-    return Ok(sortie);
+    return Ok(sortie as u64);
 }
 
 #[test]

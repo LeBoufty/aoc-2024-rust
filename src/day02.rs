@@ -66,22 +66,22 @@ fn parse_input(test:bool) -> Result<Reports, Box<dyn error::Error>> {
     Ok(sortie)
 }
 
-pub fn part1(test:bool) -> Result<u32, Box<dyn error::Error>> {
+pub fn part1(test:bool) -> Result<u64, Box<dyn error::Error>> {
     let mut sortie = 0;
     let reports = parse_input(test)?;
     for i in reports.values {
         if i.is_safe() {sortie += 1;}
     }
-    Ok(sortie)
+    Ok(sortie as u64)
 }
 
-pub fn part2(test:bool) -> Result<u32, Box<dyn error::Error>> {
+pub fn part2(test:bool) -> Result<u64, Box<dyn error::Error>> {
     let mut sortie = 0;
     let reports = parse_input(test)?;
     for i in reports.values {
         if i.is_safe_dampen() {sortie += 1;}
     }
-    Ok(sortie)
+    Ok(sortie as u64)
 }
 
 #[test]

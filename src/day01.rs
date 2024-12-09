@@ -25,7 +25,7 @@ fn parse_input(test: bool) -> Result<Lists, Box<dyn error::Error>> {
     Ok(sortie)
 }
 
-pub fn part1(test:bool) -> Result<u32, Box<dyn error::Error>> {
+pub fn part1(test:bool) -> Result<u64, Box<dyn error::Error>> {
     let mut values = parse_input(test)?;
     values.left.sort();
     values.right.sort();
@@ -33,10 +33,10 @@ pub fn part1(test:bool) -> Result<u32, Box<dyn error::Error>> {
     for i in 0..values.left.len() {
         sortie += values.left[i].abs_diff(values.right[i]);
     }
-    Ok(sortie)
+    Ok(sortie as u64)
 }
 
-pub fn part2(test:bool) -> Result<u32, Box<dyn error::Error>> {
+pub fn part2(test:bool) -> Result<u64, Box<dyn error::Error>> {
     let values = parse_input(test)?;
     let mut similarities: HashMap<u32, u32> = HashMap::new();
     let mut sortie: u32 = 0;
@@ -46,7 +46,7 @@ pub fn part2(test:bool) -> Result<u32, Box<dyn error::Error>> {
     for i in values.left {
         sortie += i * similarities.get(&i).unwrap_or(&0);
     }
-    Ok(sortie)
+    Ok(sortie as u64)
 }
 
 #[test]

@@ -62,15 +62,15 @@ fn parse_input(test:bool) -> Result<Antennas, Box<dyn error::Error>> {
     })
 }
 
-pub fn part1(test: bool) -> Result<u32, Box<dyn error::Error>> {
+pub fn part1(test: bool) -> Result<u64, Box<dyn error::Error>> {
     let values = parse_input(test)?;
-    let sortie = values.get_antinodes(false).len() as u32;
+    let sortie = values.get_antinodes(false).len() as u64;
     Ok(sortie)
 }
 
-pub fn part2(test: bool) -> Result<u32, Box<dyn error::Error>> {
+pub fn part2(test: bool) -> Result<u64, Box<dyn error::Error>> {
     let values = parse_input(test)?;
-    let sortie = values.get_antinodes(true).len() as u32;
+    let sortie = values.get_antinodes(true).len() as u64;
     Ok(sortie)
 }
 

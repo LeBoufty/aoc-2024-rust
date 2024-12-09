@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 use lazy_static::lazy_static;
 
-type DayPartFn = fn(bool) -> Result<u32, Box<dyn std::error::Error>>;
+type DayPartFn = fn(bool) -> Result<u64, Box<dyn std::error::Error>>;
 
 lazy_static! {
     pub static ref FUNCTIONS: HashMap<(&'static str, &'static str), DayPartFn> = {
@@ -22,6 +22,7 @@ lazy_static! {
         m.insert(("07", "2"), crate::day07::part2 as DayPartFn);
         m.insert(("08", "1"), crate::day08::part1 as DayPartFn);
         m.insert(("08", "2"), crate::day08::part2 as DayPartFn);
+        m.insert(("09", "1"), crate::day09::part1 as DayPartFn);
         m
     };
 }

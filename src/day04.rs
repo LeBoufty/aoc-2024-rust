@@ -21,7 +21,7 @@ fn parse_input(test: bool) -> Result<Word, Box<dyn error::Error>> {
     Ok(sortie)
 }
 
-pub fn part1(test: bool) -> Result<u32, Box<dyn error::Error>> {
+pub fn part1(test: bool) -> Result<u64, Box<dyn error::Error>> {
     let values = parse_input(test)?;
     let mut count = 0;
     for x in values.x {
@@ -55,7 +55,7 @@ pub fn part1(test: bool) -> Result<u32, Box<dyn error::Error>> {
     Ok(count)
 }
 
-pub fn part2(test: bool) -> Result<u32, Box<dyn error::Error>> {
+pub fn part2(test: bool) -> Result<u64, Box<dyn error::Error>> {
     let values = parse_input(test)?;
     let mut count = 0;
     for a in values.a {

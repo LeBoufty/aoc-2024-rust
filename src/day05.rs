@@ -4,16 +4,16 @@ use crate::inputs::read_lines;
 use rayon::prelude::*;
 
 struct Ordering {
-    before: HashMap<u32, Vec<u32>>,
-    updates: Vec<Vec<u32>>
+    before: HashMap<u64, Vec<u64>>,
+    updates: Vec<Vec<u64>>
 }
 
 impl Ordering {
-    fn is_correct(&self, update: &Vec<u32>) -> bool {
+    fn is_correct(&self, update: &Vec<u64>) -> bool {
         return self.get_problem(update).is_none();
     }
 
-    fn get_problem(&self, update:&Vec<u32>) -> Option<(usize, usize)> {
+    fn get_problem(&self, update:&Vec<u64>) -> Option<(usize, usize)> {
         for i in 0..update.len()-1 {
             let befores_o = self.before.get(&update[i]);
             if !befores_o.is_none() {
@@ -28,21 +28,21 @@ impl Ordering {
         None
     }
 
-    fn get_correct(&self) -> Vec<Vec<u32>> {
+    fn get_correct(&self) -> Vec<Vec<u64>> {
         self.updates.par_iter()
             .filter(|u| self.is_correct(u))
             .map(|u| u.clone())
             .collect()
     }
 
-    fn get_incorrect(&self) -> Vec<Vec<u32>> {
+    fn get_incorrect(&self) -> Vec<Vec<u64>> {
         self.updates.par_iter()
             .filter(|u| !self.is_correct(u))
             .map(|u| u.clone())
             .collect()
     }
 
-    fn corrected(&self, update: &Vec<u32>) -> Vec<u32> {
+    fn corrected(&self, update: &Vec<u64>) -> Vec<u64> {
         let mut sortie = update.clone();
         while !self.is_correct(&sortie) {
             let indexes = self.get_problem(&sortie).unwrap();
@@ -63,17 +63,17 @@ fn parse_input(test:bool) -> Result<Ordering, Box<dyn error::Error>> {
         if l.eq("") {
             parsing_rules = false;
         } else if parsing_rules {
-            let digits: Vec<u32> = l.split('|').map(|s| s.parse().unwrap()).collect();
+            let digits: Vec<u64> = l.split('|').map(|s| s.parse().unwrap()).collect();
             sortie.before.entry(digits[1]).or_insert(Vec::new()).push(digits[0]);
         } else {
-            let digits: Vec<u32> = l.split(',').map(|s| s.parse().unwrap()).collect();
+            let digits: Vec<u64> = l.split(',').map(|s| s.parse().unwrap()).collect();
             sortie.updates.push(digits.clone());
         }
     }
     Ok(sortie)
 }
 
-pub fn part1(test: bool) -> Result<u32, Box<dyn error::Error>> {
+pub fn part1(test: bool) -> Result<u64, Box<dyn error::Error>> {
     let values = parse_input(test)?;
     let correct = values.get_correct();
     let sortie = correct.par_iter()
@@ -82,7 +82,7 @@ pub fn part1(test: bool) -> Result<u32, Box<dyn error::Error>> {
     Ok(sortie)
 }
 
-pub fn part2(test: bool) -> Result<u32, Box<dyn error::Error>> {
+pub fn part2(test: bool) -> Result<u64, Box<dyn error::Error>> {
     let values = parse_input(test)?;
     let updates = values.get_incorrect();
     let sortie = updates.par_iter()

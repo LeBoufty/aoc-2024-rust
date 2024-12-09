@@ -64,22 +64,22 @@ fn parse_input(test: bool) -> Result<Calibration, Box<dyn error::Error>> {
     Ok(Calibration {equations})
 }
 
-pub fn part1(test: bool) -> Result<u32, Box<dyn error::Error>> {
+pub fn part1(test: bool) -> Result<u64, Box<dyn error::Error>> {
     let values = parse_input(test)?;
     let sortie: u64 = values.equations.par_iter()
         .filter(|x| x.is_possible())
         .map(|x| x.result)
         .sum();
-    Ok(sortie as u32)
+    Ok(sortie)
 }
 
-pub fn part2(test: bool) -> Result<u32, Box<dyn error::Error>> {
+pub fn part2(test: bool) -> Result<u64, Box<dyn error::Error>> {
     let values = parse_input(test)?;
     let sortie: u64 = values.equations.par_iter()
         .filter(|x| x.is_possible_concat())
         .map(|x| x.result)
         .sum();
-    Ok(sortie as u32)
+    Ok(sortie)
 }
 
 #[test]
