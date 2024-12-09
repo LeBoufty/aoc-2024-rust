@@ -6,7 +6,7 @@ use std::cmp::min;
 struct Block {
     start: u64,
     size: u64,
-    id: Option<u64>
+    id: u64
 }
 
 struct Disk {
@@ -18,9 +18,8 @@ impl Disk {
     fn value(&self) -> u64 {
         let mut sum: u64 = 0;
         for b in &self.full {
-            for i in b.start..b.start+b.size {
-                sum += i * b.id.unwrap();
-            }
+            sum += (b.start..b.start+b.size)
+                .map(|i| i * b.id).sum::<u64>();
         }
         sum
     }
@@ -40,14 +39,14 @@ fn parse_input(test:bool) -> Result<Disk, Box<dyn error::Error>> {
             sortie.empty.push(Block {
                 start,
                 size,
-                id: None
+                id: 0
             });
             id += 1;
         } else {
             sortie.full.push(Block {
                 start,
                 size,
-                id: Some(id)
+                id
             });
         }
         empty = !empty;
