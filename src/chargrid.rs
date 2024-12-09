@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 
 #[derive(Clone)]
 pub struct CharGrid {
@@ -36,6 +36,17 @@ impl CharGrid {
             for c in 0..self.grid[l].len() {
                 if self.get(l, c).unwrap() == ch {
                     sortie.push((l as i32, c as i32));
+                }
+            }
+        }
+        sortie
+    }
+    pub fn find_all_hset(&self, ch:char) -> HashSet<(i32, i32)> {
+        let mut sortie: HashSet<(i32, i32)> = HashSet::new();
+        for l in 0..self.height() {
+            for c in 0..self.grid[l].len() {
+                if self.get(l, c).unwrap() == ch {
+                    sortie.insert((l as i32, c as i32));
                 }
             }
         }
