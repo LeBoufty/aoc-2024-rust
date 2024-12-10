@@ -1,4 +1,5 @@
 use crate::inputs::read_lines;
+use core::error;
 
 struct Template {
 
@@ -6,7 +7,7 @@ struct Template {
 
 fn parse_input(test:bool) -> Result<Template, Box<dyn error::Error>> {
     let lines = read_lines(5, test)?;
-    let sortie: Template;
+    let sortie: Template = Template {};
     Ok(sortie)
 }
 
