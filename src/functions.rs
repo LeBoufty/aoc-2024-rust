@@ -26,6 +26,8 @@ lazy_static! {
         m.insert(("09", "2"), crate::day09::part2 as DayPartFn);
         m.insert(("10", "1"), crate::day10::part1 as DayPartFn);
         m.insert(("10", "2"), crate::day10::part2 as DayPartFn);
+        m.insert(("11", "1"), crate::day11::part1 as DayPartFn);
+        m.insert(("11", "2"), crate::day11::part2 as DayPartFn);
         m
     };
 }
